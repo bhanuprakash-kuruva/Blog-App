@@ -1,0 +1,62 @@
+<!-- views/partials/footer.ejs -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-4 mb-3">
+                <h5>About Blogify</h5>
+                <p>
+                    Blogify is a platform where you can share your thoughts, insights, and experiences with the world. 
+                    Connect with other bloggers and read fascinating stories every day!
+                </p>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="col-md-4 mb-3">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="text-white">Home</a></li>
+                    <li><a href="/blog/addBlog" class="text-white">Create Blog</a></li>
+                    <li><a href="/user/profile/<%= user ? user._id : '' %>" class="text-white">Profile</a></li>
+                    <li><a href="/user/signin" class="text-white">Sign In</a></li>
+                    <li><a href="/user/signup" class="text-white">Sign Up</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="col-md-4 mb-3">
+                <h5>Follow Us</h5>
+                <ul class="list-unstyled d-flex">
+                    <li class="me-3">
+                        <a href="#" class="text-white">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </a>
+                    </li>
+                    <li class="me-3">
+                        <a href="#" class="text-white">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright and Contact Info -->
+        <div class="row mt-3">
+            <div class="col text-center">
+                <p>&copy; <%= new Date().getFullYear() %> Blogify. All rights reserved.</p>
+                <p>
+                    Contact us at <a href="mailto:support@blogify.com" class="text-white">support@blogify.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Font Awesome for Social Icons (optional, add in head if not already included) -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Sign Up</title>
+    <style>
+        /* Centering the form using Flexbox */
+        .signin-container {
+            height: 100vh;
+             
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #b{
+          display: flex;
+          justify-content: center;
+        }
+        .btn-submit:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body style="background:rgb(0, 24, 46)">
+    <%- include('./partials/nav') %>
+
+    <!-- Sign Up Form Container -->
+    <div class="signin-container">
+        <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%; background-color: aliceblue;">
+            <h2 class="mb-4 text-center">Sign Up</h2>
+            <p>Already have an account? <a href="/user/signin">Login</a></p>
+            <form id="signupForm" action="/user/signup" method="POST">
+                
+                <div class="mb-3">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <input type="text" name="fullName" class="form-control" id="fullName" required>
+                  <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email address</label>
+                  <input type="email" name="email" class="form-control" id="email" required>
+                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" name="password" class="form-control" id="password" required>
+                  <div class="invalid-feedback">Please enter a password.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label">Confirm Password</label>
+                  <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" required>
+                  <div class="invalid-feedback">Please confirm your password.</div>
+                </div>
+                
+                <div id="b">
+                  <button type="submit"  class="btn btn-primary btn-submit" id="submitBtn" disabled>Submit</button>
+                </div>
+            </form>
+
+            <% if(locals.error){ %>
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <%= locals.error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include('./partials/script') %>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const submitButton = document.getElementById('submitBtn');
+
+        // Real-time validation
+        form.addEventListener('input', function() {
+            // Enable/Disable submit button based on validation
+            if (
+                fullNameInput.checkValidity() &&
+                emailInput.checkValidity() &&
+                passwordInput.checkValidity() &&
+                confirmPasswordInput.checkValidity() &&
+                passwordInput.value === confirmPasswordInput.value
+            ) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+
+        // Display form validation feedback
+        fullNameInput.addEventListener('input', function() {
+            if (!fullNameInput.checkValidity()) {
+                fullNameInput.classList.add('is-invalid');
+            } else {
+                fullNameInput.classList.remove('is-invalid');
+            }
+        });
+
+        emailInput.addEventListener('input', function() {
+            if (!emailInput.checkValidity()) {
+                emailInput.classList.add('is-invalid');
+            } else {
+                emailInput.classList.remove('is-invalid');
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (!passwordInput.checkValidity()) {
+                passwordInput.classList.add('is-invalid');
+            } else {
+                passwordInput.classList.remove('is-invalid');
+            }
+        });
+
+        confirmPasswordInput.addEventListener('input', function() {
+            if (confirmPasswordInput.value !== passwordInput.value) {
+                confirmPasswordInput.classList.add('is-invalid');
+            } else {
+                confirmPasswordInput.classList.remove('is-invalid');
+            }
+        });
+
+        // Show loading indicator on submit (optional)
+        form.addEventListener('submit', function(event) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = "Submitting...";
+        });
+
+        // Adding focus and blur events for better interactivity
+        fullNameInput.addEventListener('focus', function() {
+            fullNameInput.classList.remove('is-invalid');
+        });
+        emailInput.addEventListener('focus', function() {
+            emailInput.classList.remove('is-invalid');
+        });
+        passwordInput.addEventListener('focus', function() {
+            passwordInput.classList.remove('is-invalid');
+        });
+        confirmPasswordInput.addEventListener('focus', function() {
+            confirmPasswordInput.classList.remove('is-invalid');
+        });
+
+        fullNameInput.addEventListener('blur', function() {
+            if (!fullNameInput.checkValidity()) {
+                fullNameInput.classList.add('is-invalid');
+            }
+        });
+
+        emailInput.addEventListener('blur', function() {
+            if (!emailInput.checkValidity()) {
+                emailInput.classList.add('is-invalid');
+            }
+        });
+
+        passwordInput.addEventListener('blur', function() {
+            if (!passwordInput.checkValidity()) {
+                passwordInput.classList.add('is-invalid');
+            }
+        });
+
+        confirmPasswordInput.addEventListener('blur', function() {
+            if (confirmPasswordInput.value !== passwordInput.value) {
+                confirmPasswordInput.classList.add('is-invalid');
+            }
+        });
+    </script>
+</body>
+</html>
+
+

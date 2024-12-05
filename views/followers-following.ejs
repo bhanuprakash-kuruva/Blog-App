@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title><%= user.fullName %> - Followers and Following</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Container and Background */
+        body {
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+
+        /* Card Styling */
+        .section-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Profile Item Styling */
+        .profile-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+
+        /* View Profile Button Styling */
+        .btn-view-profile {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.2s, box-shadow 0.3s ease;
+            text-decoration: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+        .btn-view-profile:hover {
+            background-color: #0056b3;
+            box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .section-card {
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <% if(user._id.toString()===currId) {%>
+        <%- include('./partials/nav') %>
+    <% } %>
+
+    <div class="container">
+        <h2 class="text-center mb-5"><%= user.fullName %>'s Connections</h2>
+
+        <div class="row">
+            <!-- Followers Section -->
+            <div class="col-md-6 mb-4">
+                <div class="section-card">
+                    <h3 class="section-title">Followers</h3>
+                    <% if (user.followers.length > 0) { %>
+                        <% user.followers.forEach(follower => { %>
+                            <div class="profile-item">
+                                <img src="<%= follower.profileImgURL || '/default-profile.png' %>" alt="Follower Profile Image" class="profile-img">
+                                <div>
+                                    <h5><a href="/user/profile/<%= follower._id %>/<%= currId %>" class="text-dark text-decoration-none"><%= follower.fullName %></a></h5>
+                                    <a href="/user/profile/<%= follower._id %>/<%= currId %>" class="btn-view-profile">View Profile</a>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <p class="text-muted">No followers yet.</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Following Section -->
+            <div class="col-md-6 mb-4">
+                <div class="section-card">
+                    <h3 class="section-title">Following</h3>
+                    <% if (user.following.length > 0) { %>
+                        <% user.following.forEach(following => { %>
+                            <div class="profile-item">
+                                <img src="<%= following.profileImgURL || '/default-profile.png' %>" alt="Following Profile Image" class="profile-img">
+                                <div>
+                                    <h5><a href="/user/profile/<%= following._id %>/<%= currId %>" class="text-dark text-decoration-none"><%= following.fullName %></a></h5>
+                                    <a href="/user/profile/<%= following._id %>/<%= currId %>" class="btn-view-profile">View Profile</a>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <p class="text-muted">Not following anyone yet.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

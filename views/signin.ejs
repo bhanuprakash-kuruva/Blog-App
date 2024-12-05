@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Sign In</title>
+    <style>
+        /* Custom CSS to center the form */
+        .signin-container {
+            height: 100vh; /* Full height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-submit:disabled {
+            background-color: #ccc;
+        }
+        #b{
+          display: flex;
+          justify-content: center;
+        }
+    </style>
+</head>
+<body style="background:rgb(0, 24, 46)">
+    <%- include('./partials/nav') %>
+
+    <!-- Sign In Form Container -->
+    <div class="signin-container">
+        <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%; height:70vh;">
+            <h2 class="mb-4 text-center">Sign In</h2>
+            
+            <form id="signinForm" action="/user/signin" method="POST">
+                
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email address</label>
+                  <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" name="password" class="form-control" id="password" required>
+                  <div class="invalid-feedback">Please enter your password.</div>
+                </div>
+                <p>Don't have an account? <a href="/user/signup">Signup</a></p>
+               <div id="b">
+                <button type="submit" class="btn btn-primary btn-submit" id="submitBtn" disabled>Submit</button>
+               </div>
+            </form>
+
+            <% if(locals.error){ %>
+            <div class="alert alert-danger alert-dismissible fade show mt-3 "  role="alert">
+                <%= locals.error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include('./partials/script') %>
+
+    <script>
+        // Real-time validation
+        const form = document.getElementById('signinForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitButton = document.getElementById('submitBtn');
+
+        // Enable/Disable submit button based on validation
+        form.addEventListener('input', function() {
+            if (emailInput.checkValidity() && passwordInput.checkValidity()) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+
+        // Display form validation feedback
+        emailInput.addEventListener('input', function() {
+            if (!emailInput.checkValidity()) {
+                emailInput.classList.add('is-invalid');
+            } else {
+                emailInput.classList.remove('is-invalid');
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (!passwordInput.checkValidity()) {
+                passwordInput.classList.add('is-invalid');
+            } else {
+                passwordInput.classList.remove('is-invalid');
+            }
+        });
+
+        // Show loading indicator on submit (optional)
+        form.addEventListener('submit', function(event) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = "Submitting...";
+        });
+
+        // Adding focus and blur events for better interactivity
+        emailInput.addEventListener('focus', function() {
+            emailInput.classList.remove('is-invalid');
+        });
+
+        passwordInput.addEventListener('focus', function() {
+            passwordInput.classList.remove('is-invalid');
+        });
+
+        emailInput.addEventListener('blur', function() {
+            if (!emailInput.checkValidity()) {
+                emailInput.classList.add('is-invalid');
+            }
+        });
+
+        passwordInput.addEventListener('blur', function() {
+            if (!passwordInput.checkValidity()) {
+                passwordInput.classList.add('is-invalid');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Page Background */
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Arial', sans-serif;
+        }
+        .er{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f3f4f6;
+            color: #333;
+        }
+        .error-container {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .error-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #dc3545; /* Error red */
+        }
+        .error-container p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .error-container a {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background: #007bff; /* Blue button */
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        .error-container a:hover {
+            background: #0056b3; /* Darker blue on hover */
+        }
+        /* Main Container */
+        .blog-container {
+            max-width: 900px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        /* Blog Title */
+        .blog-title {
+            color: #007bff;
+            font-weight: 700;
+            font-size: 2.5rem;
+            transition: color 0.2s ease;
+        }
+        .blog-title:hover {
+            color: #0056b3;
+            cursor: pointer;
+        }
+
+        /* Author Image Styling - Positioned at the top-right corner */
+        .author-info {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            text-align: center;
+        }
+        .author-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+            transition: transform 0.2s;
+        }
+        .author-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Blog Content */
+        .blog-body {
+            color: #495057;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Comments Section */
+        .comment-container {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            transition: background-color 0.3s ease;
+        }
+        .comment-container:hover {
+            background-color: #e2e6ea;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .prof-btn {
+            background-color: #6bb2ff;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            transition: background-color 0.2s ease, transform 0.2s;
+            display: block;
+            text-decoration: none;
+        }
+        .prof-btn:hover {
+            background-color: #589edb;
+            transform: translateY(-2px);
+        }
+
+        /* Textarea Styling */
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            transition: border 0.3s ease;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            border-color: #007bff;
+        }
+
+        /* Blog Image */
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+        .img-fluid:hover {
+            transform: scale(1.02);
+        }
+
+        /* Comment Section Header */
+        .comment-header {
+            color: #495057;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        /* Public CSS file */
+        .likes-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .likes-section button {
+            margin-right: 8px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .blog-title {
+                font-size: 2rem;
+            }
+            .author-image {
+                width: 60px;
+                height: 60px;
+            }
+            .blog-body {
+                max-height: 300px;
+            }
+            .author-info {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<% if(user){ %>
+<% if(blog){ %>
+    <body style="background-color: #a8eeff;">
+        <%- include('./partials/nav') %>
+    
+        <div class="container blog-container mt-5">
+            <!-- Blog Title and Image -->
+            <div class="text-center">
+                <h1 class="blog-title mb-3"><%= blog.title %></h1>
+                <img src="<%= blog.imageURL %>" class="img-fluid rounded mb-4" alt="Blog Image">
+            </div>
+    
+            <!-- Author Info - Positioned in the Top Right Corner -->
+            <div class="author-info">
+                <img src="<%= blog.createdBy.profileImgURL %>" class="author-image mb-2" alt="Author Image">
+                <h6 class="text-primary"><%= blog.createdBy.fullName %></h6>
+                <a href="/user/profile/<%= blog.createdBy._id %>/<%= user._id %>" class="prof-btn">View Profile</a>
+            </div>
+    
+            <!-- Blog Content -->
+            <div class="blog-body mb-4">
+                <p class="lead"><%= blog.body %></p>
+            </div>
+            <% if (user && user._id.toString() === blog.createdBy._id.toString()) { %>
+                <form action="/blog/delete/<%= blog._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this blog?');">
+                    <button type="submit" class="btn btn-danger mt-3">Delete Blog</button>
+                </form>
+            <% } %>
+            <div class="likes-section">
+                <form action="/blog/like/<%= blog._id %>" method="POST">
+                    <button type="submit" class="btn btn-primary">
+                        <% if (blog.likes.includes(user._id)) { %> Unlike <% } else { %> Like <% } %>
+                    </button>
+                    <span><%= blog.likes.length %> Likes</span>
+                </form>
+            </div>
+            <!-- Comments Section -->
+            <div class="mt-5">
+                <div class="comment-header">
+                    Comments (<%= comments.length %>)
+                </div>
+    
+                <% if(locals.user) { %>
+                    <form action="/blog/comment/<%= blog._id %>" method="POST" class="mb-4">
+                        <div class="mb-3">
+                            <textarea name="content" class="form-control" id="content" rows="3" placeholder="Enter your comment here..." required></textarea>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Add Comment</button>
+                    </form>
+                <% } %>
+    
+                <% if(comments.length === 0){ %>
+                    <p>No comments yet.</p>
+                <% } %>
+    
+                <!-- Display Comments -->
+                <% comments.forEach(comment => { %>
+                    <div class="d-flex align-items-start mb-3 comment-container">
+                        <img src="<%= comment.createdBy.profileImgURL %>" class="rounded-circle me-3 border" width="50" height="50" alt="Commenter Image">
+                        <div>
+                            <a href="/user/profile/<%= comment.createdBy._id %>/<%= user._id %>" ><h6 class="text-black text-decoration-none mb-1"><%= comment.createdBy.fullName %></h6></a>
+                            <p class="text-muted"><%= comment.content %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    
+        <!-- Bootstrap JS Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <%- include('./partials/script') %>
+    </body>
+<% } %>
+<% } %>
+<% if(!user){ %>
+    
+    <div class="er">
+        <div class="error-container">
+            <h1>User Not Found</h1>
+            <p>Please log in to continue.</p>
+            <a href="/user/signin">Log In</a>
+        </div>
+    </div>
+    <% } %>
+</html>
+
+  

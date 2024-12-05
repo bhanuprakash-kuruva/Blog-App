@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Blogify</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link <%= locals.activePage === 'home' ? 'active' : '' %>" href="/" aria-current="page">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= locals.activePage === 'about' ? 'active' : '' %>" href="/user/about" aria-current="page">About</a>
+        </li>
+        <% if(locals.user){ %>
+          <li class="nav-item">
+            <a class="nav-link <%= locals.activePage === 'addBlog' ? 'active' : '' %>" href="/blog/addBlog">Add Blog</a>
+          </li>
+          <% if (locals.user) { %>
+            <li class="nav-item">
+              <a class="nav-link position-relative" href="/user/notifications/<%= locals.user._id %>">Notifications
+                <i class="bi bi-bell"></i> <!-- Bootstrap Bell Icon -->
+                <% if (locals.unreadCount > 0) { %>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <%= locals.unreadCount %>
+                    <span class="visually-hidden">unread notifications</span>
+                  </span>
+                <% } %>
+              </a>
+            </li>
+          <% } %>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://i.pravatar.cc/30" class="rounded-circle" alt="User" /> <%= locals.user.fullName %>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="/user/profile/<%= locals.user._id %>">Profile</a></li>
+              <li><a class="dropdown-item" href="/user/logout">Log Out</a></li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link <%= locals.activePage === 'signup' ? 'active' : '' %>" href="/user/signup">Create an Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= locals.activePage === 'signin' ? 'active' : '' %>" href="/user/signin">Sign In</a>
+          </li>
+        <% } %>
+      </ul>
+
+      <form class="d-flex" role="search" method="get" action="/blog/search">
+        <input class="form-control me-2" type="search" placeholder="Search blogs..." aria-label="Search" name="title">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<% if(locals.error){ %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= locals.error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<style>
+  /* Styles for Notifications */
+  .navbar .bi-bell {
+    position: relative;
+    font-size: 1.2rem;
+  }
+
+  .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+  /* Hover effect for notification dropdown */
+  .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+</style>
+
+<script>
+
+  // JavaScript to mark notifications as read (example)
+  document.getElementById('notificationDropdown').addEventListener('click', () => {
+    fetch('/notifications/markAsRead', { method: 'POST' })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Optionally update UI, e.g., remove the notification badge
+          document.querySelector('.badge').style.display = 'none';
+        }
+      });
+  });
+</script>

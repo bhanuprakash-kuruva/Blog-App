@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Create Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Background color and responsive styling */
+        body {
+            background-color: rgb(0, 24, 46); /* Light gray background for the page */
+            color: #333;
+        }
+
+        /* Form container styling */
+        .form-container {
+            background-color: #ffffff; /* White background for form */
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        /* Labels and inputs */
+        label {
+            color: #495057; /* Darker text for labels */
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        /* Submit button styling */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="form-container col-12 col-md-8 col-lg-6">
+            <h2 class="text-center mb-4">Create a New Blog Post</h2>
+            <form action="/blog/<%= user._id %>" method="post" enctype="multipart/form-data">
+                <!-- Cover Image -->
+                <div class="mb-4">
+                    <label for="coverImage">Cover Image</label>
+                    <input type="file" class="form-control" id="coverImage" name="coverImage" aria-describedby="coverImage" required>
+                </div>
+                
+                <!-- Title -->
+                <div class="mb-4">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" aria-describedby="title" placeholder="Enter blog title" required>
+                </div>
+                
+                <!-- Body -->
+                <div class="mb-4">
+                    <label for="floatingTextArea">Body</label>
+                    <textarea class="form-control" placeholder="Write your content here..." id="floatingTextArea" name="body" rows="6" required></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('./partials/script') %>
+</body>
+</html>
