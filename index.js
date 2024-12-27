@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv')
 const userRoute = require('./routes/user');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
@@ -8,7 +9,7 @@ const blogRouter = require('./routes/blog')
 const Blog = require('./models/blog')
 const Notification = require('./models/notifications')
 const app = express();
-
+dotenv.config()
 // Set view engine and views directory
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
@@ -44,10 +45,10 @@ app.get('/', async(req, res) => {
     });
 });
 
-
-
+const MONGO_URL = process.env.MONGO_URI
+const PORT = process.env.PORT || 7001
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://bhanuprakashkuruva:Bhanujbg@cluster0.zsgxw.mongodb.net/blogify?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(MONGO_URL)
     .then(() => {
         console.log('MongoDB connected...');
     })
@@ -56,7 +57,7 @@ mongoose.connect('mongodb+srv://bhanuprakashkuruva:Bhanujbg@cluster0.zsgxw.mongo
     });
 
 
-const PORT = 7001;
+
 app.listen(PORT, () => {
     console.log(`Server running at port ${PORT}...`);
 });
