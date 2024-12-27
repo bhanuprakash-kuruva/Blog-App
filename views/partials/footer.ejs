@@ -4,28 +4,40 @@
         <div class="row">
             <!-- About Section -->
             <div class="col-md-4 mb-3">
-                <h5>About Blogify</h5>
+                <h5><i class="fas fa-info-circle"></i> About Blogify</h5>
                 <p>
                     Blogify is a platform where you can share your thoughts, insights, and experiences with the world. 
                     Connect with other bloggers and read fascinating stories every day!
                 </p>
             </div>
 
-            <!-- Navigation Links -->
+            <!-- Account Links Section -->
             <div class="col-md-4 mb-3">
-                <h5>Quick Links</h5>
+                <h5><i class="fas fa-user"></i> ACCOUNT</h5>
                 <ul class="list-unstyled">
-                    <li><a href="/" class="text-white">Home</a></li>
-                    <li><a href="/blog/addBlog" class="text-white">Create Blog</a></li>
-                    <li><a href="/user/profile/<%= user ? user._id : '' %>" class="text-white">Profile</a></li>
-                    <li><a href="/user/signin" class="text-white">Sign In</a></li>
-                    <li><a href="/user/signup" class="text-white">Sign Up</a></li>
+                    <li><a href="/" class="text-white"><i class="fas fa-user-circle"></i> My profile</a></li>
+                    <li><a href="/blog/addBlog" class="text-white"><i class="fas fa-pencil-alt"></i> Create Blog</a></li>
+                    <li><a href="/user/profile/<%= user ? user._id : '' %>" class="text-white"><i class="fas fa-id-badge"></i> Profile</a></li>
+                    <li><a href="/user/signin" class="text-white"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+                    <li><a href="/user/signup" class="text-white"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                 </ul>
             </div>
 
-            <!-- Social Media Links -->
+            <!-- Quick Links Section -->
             <div class="col-md-4 mb-3">
-                <h5>Follow Us</h5>
+                <h5><i class="fas fa-link"></i> Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="text-white"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/blog/addBlog" class="text-white"><i class="fas fa-pencil-alt"></i> Create Blog</a></li>
+                    <li><a href="/user/profile/<%= user ? user._id : '' %>" class="text-white"><i class="fas fa-id-badge"></i> Profile</a></li>
+                    <li><a href="/user/signin" class="text-white"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+                    <li><a href="/user/signup" class="text-white"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Media Links Section -->
+            <div class="col-md-4 mb-3">
+                <h5><i class="fab fa-share-alt"></i> Follow Us</h5>
                 <ul class="list-unstyled d-flex">
                     <li class="me-3">
                         <a href="#" class="text-white">
@@ -46,17 +58,17 @@
             </div>
         </div>
 
-        <!-- Copyright and Contact Info -->
+        <!-- Copyright and Contact Info Section -->
         <div class="row mt-3">
             <div class="col text-center">
                 <p>&copy; <%= new Date().getFullYear() %> Blogify. All rights reserved.</p>
                 <p>
-                    Contact us at <a href="mailto:support@blogify.com" class="text-white">support@blogify.com</a>
+                    Contact us at <a href="mailto:support@blogify.com" class="text-white"><i class="fas fa-envelope"></i> support@blogify.com</a>
                 </p>
             </div>
         </div>
     </div>
 </footer>
 
-<!-- Font Awesome for Social Icons (optional, add in head if not already included) -->
+<!-- Font Awesome for Social Icons and other icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>

@@ -162,7 +162,187 @@ router.post('/comment/:id', async (req, res) => {
     }
 });
 
+
+// router.post('/comment/reply/:commentId', async (req, res) => {
+//     try {
+//         const commentId = req.params.commentId;
+//         const { replyContent } = req.body;
+
+//         // Fetch the comment being replied to
+//         const comment = await Comment.findById(commentId).populate('createdBy');
+//         if (!comment) {
+//             return res.status(404).send('Comment not found');
+//         }
+
+//         // Create the reply object
+//         const reply = {
+//             content: replyContent,
+//             createdBy: req.user._id,
+//             createdAt: new Date()
+//         };
+
+//         // Push the reply to the replies array of the comment
+//         await Comment.findByIdAndUpdate(commentId, { $push: { replies: reply } });
+
+//         // Notify the author of the original comment
+//         await Notification.create({
+//             content: replyContent,
+//             sender: req.user._id,
+//             user: comment.createdBy._id, // Notify the original commenter
+//             type: 'reply',
+//             message: `User ${req.user.fullName} replied to your comment.`,
+//             link: `/blog/${comment.blogId}` // Link to the blog the comment belongs to
+//         });
+
+//         res.redirect('back');
+//     } catch (err) {
+//         console.error("Error posting reply or creating notification:", err);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
+
 // routes/blog.js
+
+// router.post('/comment/reply/:commentId', async (req, res) => {
+//     try {
+//         const commentId = req.params.commentId;
+//         const { replyContent } = req.body;
+
+//         // Fetch the comment being replied to
+//         const comment = await Comment.findById(commentId).populate('createdBy');
+//         if (!comment) {
+//             return res.status(404).send('Comment not found');
+//         }
+
+//         // Fetch the replying user's full name
+//         const user = await User.findById(req.user._id); // Ensure we have the full user details
+
+//         // Create the reply object
+//         const reply = {
+//             content: replyContent,
+//             createdBy: req.user._id,
+//             createdAt: new Date()
+//         };
+
+//         // Push the reply to the replies array of the comment
+//         await Comment.findByIdAndUpdate(commentId, { $push: { replies: reply } });
+
+//         // Notify the author of the original comment
+//         await Notification.create({
+//             content: replyContent,
+//             sender: req.user._id,
+//             user: comment.createdBy._id, // Notify the original commenter
+//             type: 'reply',
+//             message: `User ${user.fullName} replied to your comment.`,
+//             link: `/blog/${comment.blogId}` // Link to the blog the comment belongs to
+//         });
+
+//         res.redirect('back');
+//     } catch (err) {
+//         console.error("Error posting reply or creating notification:", err);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
+
+router.post('/comment/reply/:commentId', async (req, res) => {
+    try {
+        const commentId = req.params.commentId;
+        const { replyContent } = req.body;
+
+        // Fetch the comment being replied to
+        const comment = await Comment.findById(commentId).populate('replies').populate('createdBy');
+        if (!comment) {
+            return res.status(404).send('Comment not found');
+        }
+
+        // Fetch the replying user's full name
+        const user = await User.findById(req.user._id);
+
+        // Create the reply object
+        const reply = {
+            content: replyContent,
+            createdBy: req.user._id,
+            createdAt: new Date()
+        };
+
+        // Push the reply to the replies array of the comment
+        await Comment.findByIdAndUpdate(commentId, { $push: { replies: reply } });
+
+        // Notify the author of the original comment
+        await Notification.create({
+            content: replyContent,
+            sender: req.user._id,
+            user: comment.createdBy._id, // Notify the original commenter
+            type: 'reply',
+            message: `User ${user.fullName} replied to your comment.`,
+            link: `/blog/${comment.blogId}`
+        });
+
+        // Redirect safely
+        const referer = req.get('Referer') || `/blog/${comment.blogId}`;
+        res.redirect(referer);
+    } catch (err) {
+        console.error("Error posting reply or creating notification:", err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// router.post('/comment/reply/:commentId', async (req, res) => {
+//     try {
+//         const commentId = req.params.commentId;
+//         const { replyContent } = req.body;
+
+//         // Fetch the comment being replied to
+//         // const comment = await Comment.findById(commentId).populate('createdBy'); // Populate the original comment's author
+//         const comment = await Comment.findById(commentId)
+//     .populate({
+//         path: 'replies.createdBy', // Populate the createdBy field within replies
+//         select: 'fullName profileImgURL' // Select specific fields to optimize query
+//     })
+//     .populate('createdBy'); // Populate the original comment's author
+//     console.log(comment.replies);
+
+//         if (!comment) {
+//             return res.status(404).send('Comment not found');
+//         }
+
+//         // Fetch the replying user's full name
+//         const user = await User.findById(req.user._id);
+//         if (!user) {
+//             return res.status(404).send('User not found');
+//         }
+
+//         // Create the reply object
+//         const reply = {
+//             content: replyContent,
+//             createdBy: req.user._id,
+//             createdAt: new Date()
+//         };
+
+//         // Add the reply to the comment
+//         await Comment.findByIdAndUpdate(commentId, { $push: { replies: reply } });
+
+//         // Notify the author of the original comment
+//         await Notification.create({
+//             content: replyContent,
+//             sender: req.user._id,
+//             user: comment.createdBy._id, // Notify the original commenter
+//             type: 'reply',
+//             message: `User ${user.fullName} replied to your comment.`,
+//             link: `/blog/${comment.blogId}`
+//         });
+
+//         // Safely redirect back to the previous page or fallback to the blog page
+//         const referer = req.get('Referer') || `/blog/${comment.blogId}`;
+//         res.redirect(referer);
+//     } catch (err) {
+//         console.error("Error posting reply or creating notification:", err);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
 
 router.post('/like/:id', async (req, res) => {
     const blogId = req.params.id;

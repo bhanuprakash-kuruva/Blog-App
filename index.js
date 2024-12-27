@@ -47,7 +47,7 @@ app.get('/', async(req, res) => {
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/blogify')
+mongoose.connect('mongodb+srv://bhanuprakashkuruva:Bhanujbg@cluster0.zsgxw.mongodb.net/blogify?retryWrites=true&w=majority&appName=Cluster0')
     .then(() => {
         console.log('MongoDB connected...');
     })
