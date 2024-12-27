@@ -48,7 +48,7 @@ app.get('/', async(req, res) => {
 const MONGO_URL = process.env.MONGO_URI
 const PORT = process.env.PORT || 7001
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://bhanuprakashkuruva:Bhanujbg@cluster0.zsgxw.mongodb.net/blogify?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(MONGO_URL)
     .then(() => {
         console.log('MongoDB connected...');
     })
